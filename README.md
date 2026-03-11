@@ -1,26 +1,54 @@
-# Linux Shell Script Collection
+# Linux Shell Script Branch
 
-Dieses Repository enthält eine Sammlung von Shell-Skripten (`.sh`) für Linux-Systeme.  
-Die Skripte sind so entwickelt, dass sie klar strukturiert, leicht verständlich und einfach anpassbar sind.
+This branch contains a collection of Linux shell scripts (`.sh`) designed for automation, setup tasks, system utilities, and server-related workflows.  
+All scripts follow a clean, modular structure and are built for flexibility and ease of customization.
 
-## Inhalt
-- Automatisierungs-Skripte
-- Installations- und Setup-Skripte
-- System-Werkzeuge
-- Server-Tools
-- Performance-Optimierungen (ohne Eingriff in Nutzereinstellungen oder Gameplay)
-- Hilfs-Skripte für Entwicklungs- und Administrationsaufgaben
+## Features
+- Pure Bash scripts (POSIX‑compatible wherever possible)
+- Variables at the top of each script for quick configuration
+- Modular, maintainable and clearly structured
+- No external dependencies beyond standard Linux packages
+- Safe defaults with a focus on stability and predictability
+- Compatible with all major Linux distributions (Ubuntu, Debian, Fedora, Arch, etc.)
 
-## Merkmale
-- Alle Skripte sind vollständig in Bash geschrieben
-- Keine externen Abhängigkeiten außer Standard-Linux‑Paketen
-- Saubere Struktur mit Variablen am Anfang jedes Skripts
-- Fokus auf Sicherheit und Stabilität
-- Modularer Aufbau, damit Skripte einfach erweitert werden können
-- Kompatibel mit allen modernen Linux-Distributionen
+## Included Script Types
+- System automation tools  
+- Installation and setup scripts  
+- Server management utilities  
+- Performance optimization tools (without altering user experience or gameplay)  
+- Helper scripts for development and administration  
 
-## Nutzung
-Skripte ausführbar machen:
+## Usage
+Make a script executable:
 
 ```bash
 chmod +x <scriptname>.sh
+```
+
+Run the script:
+
+```bash
+./<scriptname>.sh
+```
+
+Some scripts may require root or sudo privileges.
+
+## Requirements
+- Linux-based system
+- Bash 5.x or higher
+- Internet access for scripts that install packages or download components
+
+## Purpose of This Branch
+This branch serves as a central location for reusable, portable, and well-structured Linux shell scripts that can support:
+- System administrators
+- Developers
+- Server operators
+- Anyone automating recurring tasks
+
+## Contributing
+Contributions are welcome.
+Please open an Issue or Pull Request if you want to add new scripts or improve existing ones.
+
+## License
+This branch is published under an open-source license.
+See the `LICENSE` file for details.
