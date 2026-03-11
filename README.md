@@ -5,14 +5,9 @@
     <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT">
   </a>
 
-  <!-- Shell Scripts -->
+  <a href="SCRIPTS">
   <img src="https://img.shields.io/badge/Scripts-Bash-blue.svg" alt="Bash Scripts">
-
-  <!-- Linux -->
-  <img src="https://img.shields.io/badge/Linux-Compatible-lightgrey.svg" alt="Linux Compatible">
-
-  <!-- Branch -->
-  <img src="https://img.shields.io/badge/Branch-Shell%20Scripts-orange.svg" alt="Shell Scripts Branch">
+  </a>
 </p>
 
 # Linux Shell Script Branch
