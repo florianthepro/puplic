@@ -5,7 +5,7 @@
     <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT">
   </a>
 
-  <a href="SCRIPTS">
+  <a href="scripts">
   <img src="https://img.shields.io/badge/Scripts-Bash-blue.svg" alt="Bash Scripts">
   </a>
 </p>
