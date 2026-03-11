@@ -1,3 +1,6 @@
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Shell](https://img.shields.io/badge/Scripts-Bash-blue.svg)
+
 # Linux Shell Script Branch
 
 This branch contains a collection of Linux shell scripts (`.sh`) designed for automation, setup tasks, system utilities, and server-related workflows.  
