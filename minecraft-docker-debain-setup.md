@@ -1,4 +1,3 @@
-Run:
 ```bash
 sudo apt update
 ```
@@ -11,7 +10,7 @@ sudo apt install openssh-server
 ```bash
 sudo systemctl enable ssh
 ```
-```bash
+```powershell
 ssh user@ip
 ```
 ```bash
