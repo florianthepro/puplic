@@ -375,8 +375,8 @@ sudo docker restart paper && clear && sudo docker ps && sudo docker logs paper |
 ```
 output
 ```
-CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS                   PORTS                                             NAMES
-fffcf871b15a   itzg/minecraft-server:latest   "/image/scripts/start"   4 minutes ago   Up 4 minutes (healthy)   0.0.0.0:25565->25565/tcp, [::]:25565->25565/tcp   paper
+CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS                                     PORTS                                             NAMES
+fffcf871b15a   itzg/minecraft-server:latest   "/image/scripts/start"   7 minutes ago   Up Less than a second (health: starting)   0.0.0.0:25565->25565/tcp, [::]:25565->25565/tcp   paper
 [init] Changing ownership of /data to 1000 ...
 [init] Running as uid=1000 gid=1000 with /data as 'drwxr-xr-x 2 1000 1000 4096 Mar 12 08:30 /data'
 [init] Image info: buildtime=2026-03-11T03:23:25.192Z,version=java25,revision=9c9a3a8b43944dd245556f0cbaefab680ad75022
@@ -420,3 +420,4 @@ java.util.concurrent.CompletionException: java.lang.RuntimeException: Failed to 
 2026-03-12T07:31:02.869323188Z ServerMain WARN Advanced terminal features are not available in this environment
 admfloriank@mc:~$
 ```
+wie nun vpn machen (installiren) das für anwendung geeignet?
