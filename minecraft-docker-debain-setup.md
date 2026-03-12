@@ -10,7 +10,7 @@ sudo apt install openssh-server
 ```bash
 sudo systemctl enable ssh
 ```
->
+- 
 ```md
 ssh user@ip
 ```
