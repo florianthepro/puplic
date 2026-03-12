@@ -1,17 +1,22 @@
 Run:
 ```bash
 sudo apt update
+```
+```bash
 sudo apt upgrade
 ```
-
-### Install OpenSSH Server
-
-Run:
 ```bash
-sudo apt install -y openssh-server
-sudo systemctl enable --now ssh
+sudo apt install openssh-server
 ```
-
+```bash
+sudo systemctl enable ssh
+```
+```bash
+ssh user@ip
+```
+```bash
+sudo nano setup.sh
+```
 ```bash
 #!/usr/bin/env bash
 
