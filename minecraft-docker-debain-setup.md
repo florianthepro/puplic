@@ -141,5 +141,5 @@ echo "SETUP COMPLETE"
 sudo chmod +x setup.sh
 ```
 ```bash
-./setup.sh
+sudo ./setup.sh
 ```
