@@ -14,6 +14,7 @@ sudo systemctl enable ssh
 ```md
 ssh user@ip
 ```
+- - -
 ```bash
 sudo nano setup.sh
 ```
