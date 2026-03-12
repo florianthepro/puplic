@@ -421,3 +421,163 @@ java.util.concurrent.CompletionException: java.lang.RuntimeException: Failed to 
 admfloriank@mc:~$
 ```
 wie nun vpn machen (installiren) das für anwendung geeignet?
+```
+#!/usr/bin/env bash
+set -euo pipefail
+export DEBIAN_FRONTEND=noninteractive
+
+SERVER_DIR="/mc"
+SERVER_NAME="Minecraft Server"
+MOTD="Welcome!"
+MC_VERSION="latest"
+MAX_MEMORY="6G"
+
+ENABLE_SPARK=true
+ENABLE_CHUNKY=true
+ENABLE_FAWE=true
+ENABLE_HORIZONS=true
+ENABLE_BLUEMAP=false
+ENABLE_PLAN=false
+
+ENABLE_TAILSCALE=true
+TAILSCALE_AUTHKEY=""
+TAILSCALE_HOSTNAME="mc-server"
+
+OPT_EIGENCRAFT_REDSTONE=true
+OPT_OPTIMIZE_EXPLOSIONS=true
+OPT_NETWORK=true
+OPT_CHUNK_LOADING=true
+OPT_ANTIXRAY_ENGINE1=true
+
+echo "Updating base system packages (quiet)..."
+apt-get update -y -qq >/dev/null
+apt-get install -y -qq ca-certificates curl gnupg lsb-release wget unzip >/dev/null
+
+if [ ! -f /etc/apt/keyrings/docker.gpg ]; then
+  install -m 0755 -d /etc/apt/keyrings
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  chmod a+r /etc/apt/keyrings/docker.gpg
+
+  echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+  | tee /etc/apt/sources.list.d/docker.list >/dev/null
+
+  apt-get update -y -qq >/dev/null
+fi
+
+echo "Installing Docker (quiet)..."
+apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-compose-plugin >/dev/null
+
+mkdir -p "$SERVER_DIR"
+
+cat > "$SERVER_DIR/docker-compose.yml" <<EOF
+services:
+  mc:
+    image: itzg/minecraft-server:latest
+    container_name: paper
+    ports:
+      - "25565:25565"
+    environment:
+      EULA: "TRUE"
+      TYPE: PAPER
+      VERSION: "$MC_VERSION"
+      MEMORY: "$MAX_MEMORY"
+      TZ: "Europe/Berlin"
+      MOTD: "$MOTD"
+      SERVER_NAME: "$SERVER_NAME"
+    volumes:
+      - $SERVER_DIR/data:/data
+    restart: unless-stopped
+EOF
+
+echo "Starting Minecraft container..."
+docker compose -f "$SERVER_DIR/docker-compose.yml" up -d
+
+echo "Waiting for initial server setup..."
+sleep 20
+
+PLUGINS_DIR="$SERVER_DIR/data/plugins"
+mkdir -p "$PLUGINS_DIR"
+cd "$PLUGINS_DIR"
+
+if [ "$ENABLE_SPARK" = true ]; then
+  wget -q https://github.com/lucko/spark/releases/latest/download/spark-paper.jar -O Spark.jar
+fi
+
+if [ "$ENABLE_CHUNKY" = true ]; then
+  wget -q https://github.com/pop4959/Chunky/releases/latest/download/Chunky.jar -O Chunky.jar
+fi
+
+if [ "$ENABLE_FAWE" = true ]; then
+  wget -q https://ci.athion.net/job/FastAsyncWorldEdit/lastSuccessfulBuild/artifact/build/libs/FastAsyncWorldEdit-Paper-1.21.jar -O FAWE.jar
+fi
+
+if [ "$ENABLE_HORIZONS" = true ]; then
+  wget -q https://download.luminolmc.com/horizons.jar -O Horizons.jar
+fi
+
+if [ "$ENABLE_BLUEMAP" = true ]; then
+  mkdir -p BlueMap
+  wget -q https://github.com/BlueMap-Minecraft/BlueMap/releases/latest/download/BlueMap-3.15.jar -O BlueMap.jar
+fi
+
+if [ "$ENABLE_PLAN" = true ]; then
+  wget -q https://github.com/plan-player-analytics/Plan/releases/latest/download/Plan.jar -O Plan.jar
+fi
+
+GLOBAL_CFG="$SERVER_DIR/data/config/paper-global.yml"
+SPIGOT_CFG="$SERVER_DIR/data/spigot.yml"
+
+if [ -f "$GLOBAL_CFG" ]; then
+  if [ "$OPT_EIGENCRAFT_REDSTONE" = true ]; then
+    sed -i 's/use-faster-eigencraft-redstone: false/use-faster-eigencraft-redstone: true/' "$GLOBAL_CFG" || true
+  fi
+
+  if [ "$OPT_OPTIMIZE_EXPLOSIONS" = true ]; then
+    sed -i 's/optimize-explosions: false/optimize-explosions: true/' "$GLOBAL_CFG" || true
+  fi
+
+  if [ "$OPT_ANTIXRAY_ENGINE1" = true ]; then
+    sed -i 's/enabled: false/enabled: true/' "$GLOBAL_CFG" || true
+    sed -i 's/engine-mode: .*/engine-mode: 1/' "$GLOBAL_CFG" || true
+  fi
+fi
+
+# Netzwerk-Optimierung an dieser Stelle aktuell bewusst NICHT automatisch geändert,
+# da das u.U. Security-relevant ist (bungee-online-mode/online-mode).
+# Block bleibt als Schalter erhalten, aber ohne destructive Änderung.
+if [ -f "$SPIGOT_CFG" ] && [ "$OPT_NETWORK" = true ]; then
+  : # Platzhalter, falls du später gezielt Netzwerk-Settings einfügst
+fi
+
+if [ "$ENABLE_TAILSCALE" = true ]; then
+  echo "Installing Tailscale (quiet)..."
+  curl -fsSL https://tailscale.com/install.sh | sh >/tmp/tailscale-install.log 2>&1 || {
+    echo "Tailscale installation failed, see /tmp/tailscale-install.log"
+  }
+  systemctl enable --now tailscaled >/dev/null 2>&1 || true
+
+  if [ -n "$TAILSCALE_AUTHKEY" ]; then
+    tailscale up --authkey="$TAILSCALE_AUTHKEY" --hostname="$TAILSCALE_HOSTNAME" --ssh --accept-routes --accept-dns=false >/tmp/tailscale-up.log 2>&1 || {
+      echo "Tailscale up failed, see /tmp/tailscale-up.log"
+    }
+    echo "Tailscale is up and connected."
+  else
+    echo "Tailscale installed. Run 'sudo tailscale up' manually to connect this server."
+  fi
+fi
+
+echo "Restarting Minecraft container with plugins and config tweaks..."
+docker restart paper >/dev/null
+
+echo
+echo "SETUP COMPLETE"
+echo
+echo "Docker container 'paper' status:"
+docker ps --filter "name=paper" --format "table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"
+
+echo
+echo "First 40 log lines from 'paper':"
+docker logs paper | head -n 40
+```
