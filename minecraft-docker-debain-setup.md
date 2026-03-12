@@ -371,10 +371,7 @@ SETUP COMPLETE
 admfloriank@mc:~$
 ```
 ```
-sudo docker restart paper
-```
-```
-clear && sudo docker ps && sudo docker logs paper | head -n 40
+sudo docker restart paper && clear && sudo docker ps && sudo docker logs paper | head -n 40
 ```
 output
 ```
