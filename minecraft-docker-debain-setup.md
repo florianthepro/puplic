@@ -370,3 +370,56 @@ paper
 SETUP COMPLETE
 admfloriank@mc:~$
 ```
+```
+sudo docker restart paper
+```
+```
+clear && sudo docker ps && sudo docker logs paper | head -n 40
+```
+output
+```
+CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS                   PORTS                                             NAMES
+fffcf871b15a   itzg/minecraft-server:latest   "/image/scripts/start"   4 minutes ago   Up 4 minutes (healthy)   0.0.0.0:25565->25565/tcp, [::]:25565->25565/tcp   paper
+[init] Changing ownership of /data to 1000 ...
+[init] Running as uid=1000 gid=1000 with /data as 'drwxr-xr-x 2 1000 1000 4096 Mar 12 08:30 /data'
+[init] Image info: buildtime=2026-03-11T03:23:25.192Z,version=java25,revision=9c9a3a8b43944dd245556f0cbaefab680ad75022
+[init] Resolving type given PAPER
+[mc-image-helper] 08:30:26.150 INFO  : Downloaded /data/paper-1.21.11-127.jar
+[init] Copying any plugins from /plugins to /data/plugins
+[init] Copying any configs from /config to /data/config
+[init] Creating server properties in /data/server.properties
+[init] Disabling whitelist functionality
+[mc-image-helper] 08:30:30.858 INFO  : Created/updated 6 properties in /data/server.properties
+[mc-image-helper] 08:30:33.758 INFO  : Downloaded /data/config/paper-world-defaults.yml from https://raw.githubusercontent.com/Shonz1/minecraft-default-configs/main/1.21.11/paper-world-defaults.yml
+[mc-image-helper] 08:30:33.758 INFO  : Downloaded /data/config/paper-global.yml from https://raw.githubusercontent.com/Shonz1/minecraft-default-configs/main/1.21.11/paper-global.yml
+[mc-image-helper] 08:30:36.931 INFO  : Downloaded /data/bukkit.yml from https://raw.githubusercontent.com/Shonz1/minecraft-default-configs/main/1.21.11/bukkit.yml
+[mc-image-helper] 08:30:36.931 INFO  : Downloaded /data/spigot.yml from https://raw.githubusercontent.com/Shonz1/minecraft-default-configs/main/1.21.11/spigot.yml
+[init] Setting initial memory to 6G and max to 6G
+[init] Starting the Minecraft server...
+Downloading mojang_1.21.11.jar
+[init] Running as uid=1000 gid=1000 with /data as 'drwxr-xr-x 6 1000 1000 4096 Mar 12 08:30 /data'
+[init] Image info: buildtime=2026-03-11T03:23:25.192Z,version=java25,revision=9c9a3a8b43944dd245556f0cbaefab680ad75022
+[init] Resolving type given PAPER
+[init] Copying any plugins from /plugins to /data/plugins
+[init] Copying any configs from /config to /data/config
+[mc-image-helper] 08:30:50.670 INFO  : Created/updated 1 property in /data/server.properties
+[init] Setting initial memory to 6G and max to 6G
+[init] Starting the Minecraft server...
+Applying patches
+Starting org.bukkit.craftbukkit.Main
+[08:31:03 INFO]: [bootstrap] Running Java 25 (OpenJDK 64-Bit Server VM 25.0.2+10-LTS; Eclipse Adoptium Temurin-25.0.2+10) on Linux 6.8.0-101-generic (amd64)
+[08:31:03 INFO]: [bootstrap] Loading Paper 1.21.11-127-main@bd74bf6 (2026-03-10T02:55:23Z) for Minecraft 1.21.11
+[08:31:03 INFO]: [PluginInitializerManager] Initializing plugins...
+[08:31:03 ERROR]: [PluginRemapper] Encountered exception remapping plugins
+java.util.concurrent.CompletionException: java.lang.RuntimeException: Failed to open plugin jar plugins/Spark.jar
+        at java.base/java.util.concurrent.CompletableFuture.wrapInCompletionException(Unknown Source) ~[?:?]
+        at java.base/java.util.concurrent.CompletableFuture.reportJoin(Unknown Source) ~[?:?]
+        at java.base/java.util.concurrent.CompletableFuture.join(Unknown Source) ~[?:?]
+        at io.papermc.paper.pluginremap.PluginRemapper.waitForAll(PluginRemapper.java:414) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+        at io.papermc.paper.pluginremap.PluginRemapper.rewritePluginDirectory(PluginRemapper.java:210) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+        at io.papermc.paper.plugin.provider.source.DirectoryProviderSource.prepareContext(DirectoryProviderSource.java:53) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+        at io.papermc.paper.plugin.provider.source.DirectoryProviderSource.prepareContext(DirectoryProviderSource.java:17) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+        at io.papermc.paper.plugin.util.EntrypointUtil.registerProvidersFromSource(EntrypointUtil.java:14) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+2026-03-12T07:31:02.869323188Z ServerMain WARN Advanced terminal features are not available in this environment
+admfloriank@mc:~$
+```
