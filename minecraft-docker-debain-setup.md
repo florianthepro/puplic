@@ -136,3 +136,6 @@ fi
 
 echo "SETUP COMPLETE"
 ```
+```bash
+sudo chmod +x setup.sh
+```
