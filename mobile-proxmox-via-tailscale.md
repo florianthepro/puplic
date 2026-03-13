@@ -13,6 +13,8 @@ cat <<EOF >/etc/hosts
 127.0.1.1 pve pve.[subdomain].net
 EOF
 ```
+systemctl restart pveproxy pvedaemon
+
 4. setup tailscale subnetting
 ```
 tailscale up --reset --hostname=pve --advertise-routes=10.200.0.0/24 && echo "net.ipv4.ip_forward = 1" > /etc/sysctl.d/99-tailscale.conf && sysctl --system && sysctl -w net.ipv4.ip_forward=1 && iptables -t nat -A POSTROUTING -s 10.200.0.0/24 -o tailscale0 -j MASQUERADE
