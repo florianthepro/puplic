@@ -42,3 +42,7 @@ subnet 10.200.0.0 netmask 255.255.255.0 {
 ```
 systemctl restart isc-dhcp-server
 ```
+cat <<EOF >/etc/hosts
+127.0.0.1 localhost
+127.0.1.1 pve pve.local.subdomain.net
+EOF
