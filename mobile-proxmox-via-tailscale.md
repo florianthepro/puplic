@@ -1,5 +1,8 @@
 1. install tailscale
-2. setup tailscale
+```
+curl -fsSL https://tailscale.com/install.sh | sh && systemctl enable --now tailscaled
+```
+3. setup tailscale
 ```
 iptables -P INPUT DROP && iptables -P FORWARD DROP && iptables -P OUTPUT DROP && iptables -F INPUT && iptables -F FORWARD && iptables -F OUTPUT && iptables -A INPUT -i lo -j ACCEPT && iptables -A OUTPUT -o lo -j ACCEPT && iptables -A INPUT -i tailscale0 -j ACCEPT && iptables -A OUTPUT -o tailscale0 -j ACCEPT && iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT && iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 ```
@@ -9,4 +12,33 @@ tailscale up --reset --hostname=pve --advertise-routes=10.200.0.0/24
 ```
 5. setup new virtual interface `vmbr1`in proxmox (`Linux Bridge`>IPv4:`10.200.0.1/24`>ok)
 6. setup proxmox dhcp
+```
+apt install isc-dhcp-server -y
+```
+in
+```
+nano /etc/default/isc-dhcp-server
+```
+enter
+```
+INTERFACESv4="vmbr1"
+```
+in
+```
+nano /etc/dhcp/dhcpd.conf
+```
+enter
+```
+default-lease-time 600;
+max-lease-time 7200;
+authoritative;
+
+subnet 10.200.0.0 netmask 255.255.255.0 {
+  range 10.200.0.50 10.200.0.200;
+  option routers 10.200.0.1;
+  option domain-name-servers 1.1.1.1, 8.8.8.8;
+}
+```
+```
+systemctl restart isc-dhcp-server
 ```
