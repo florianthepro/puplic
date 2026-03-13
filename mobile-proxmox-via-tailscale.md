@@ -6,11 +6,11 @@ curl -fsSL https://tailscale.com/install.sh | sh && systemctl enable --now tails
 ```
 iptables -P INPUT DROP && iptables -P FORWARD DROP && iptables -P OUTPUT DROP && iptables -F INPUT && iptables -F FORWARD && iptables -F OUTPUT && iptables -A INPUT -i lo -j ACCEPT && iptables -A OUTPUT -o lo -j ACCEPT && iptables -A INPUT -i tailscale0 -j ACCEPT && iptables -A OUTPUT -o tailscale0 -j ACCEPT && iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT && iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 ```
-[subdomain] vai dashbourd einsehen
+[tailscale ip] vai dashbourd einsehen
 ```
 cat <<EOF >/etc/hosts
 127.0.0.1 localhost
-127.0.1.1 pve pve.[subdomain].net
+[tailscale ip] pve
 EOF
 ```
 systemctl restart pveproxy pvedaemon
