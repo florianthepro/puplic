@@ -4,11 +4,11 @@ curl -fsSL https://tailscale.com/install.sh | sh && systemctl enable --now tails
 ```
 3. setup tailscale
 ```
-iptables -P INPUT DROP && iptables -P FORWARD DROP && iptables -P OUTPUT DROP && iptables -F INPUT && iptables -F FORWARD && iptables -F OUTPUT && iptables -A INPUT -i lo -j ACCEPT && iptables -A OUTPUT -o lo -j ACCEPT && iptables -A INPUT -i tailscale0 -j ACCEPT && iptables -A OUTPUT -o tailscale0 -j ACCEPT && iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT && iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+iptables -P INPUT DROP && iptables -P FORWARD DROP && iptables -P OUTPUT DROP && iptables -F INPUT && iptables -F FORWARD && iptables -F OUTPUT && iptables -A INPUT -i lo -j ACCEPT && iptables -A OUTPUT -o lo -j ACCEPT && iptables -A INPUT -i tailscale0 -j ACCEPT && iptables -A OUTPUT -o tailscale0 -j ACCEPT && iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT && iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT && rm /etc/hosts
 ```
 4. setup tailscale subnetting
 ```
-tailscale up --reset --hostname=pve --advertise-routes=10.200.0.0/24
+tailscale up --reset --hostname=pve --advertise-routes=10.200.0.0/24 && echo "net.ipv4.ip_forward = 1" > /etc/sysctl.d/99-tailscale.conf && sysctl --system && sysctl -w net.ipv4.ip_forward=1 && iptables -t nat -A POSTROUTING -s 10.200.0.0/24 -o tailscale0 -j MASQUERADE
 ```
 5. setup new virtual interface `vmbr1`in proxmox (`Linux Bridge`>IPv4:`10.200.0.1/24`>ok)
 6. setup proxmox dhcp
