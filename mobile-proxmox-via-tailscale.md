@@ -4,7 +4,14 @@ curl -fsSL https://tailscale.com/install.sh | sh && systemctl enable --now tails
 ```
 3. setup tailscale
 ```
-iptables -P INPUT DROP && iptables -P FORWARD DROP && iptables -P OUTPUT DROP && iptables -F INPUT && iptables -F FORWARD && iptables -F OUTPUT && iptables -A INPUT -i lo -j ACCEPT && iptables -A OUTPUT -o lo -j ACCEPT && iptables -A INPUT -i tailscale0 -j ACCEPT && iptables -A OUTPUT -o tailscale0 -j ACCEPT && iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT && iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT && rm /etc/hosts
+iptables -P INPUT DROP && iptables -P FORWARD DROP && iptables -P OUTPUT DROP && iptables -F INPUT && iptables -F FORWARD && iptables -F OUTPUT && iptables -A INPUT -i lo -j ACCEPT && iptables -A OUTPUT -o lo -j ACCEPT && iptables -A INPUT -i tailscale0 -j ACCEPT && iptables -A OUTPUT -o tailscale0 -j ACCEPT && iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT && iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+```
+[subdomain] vai dashbourd einsehen
+```
+cat <<EOF >/etc/hosts
+127.0.0.1 localhost
+127.0.1.1 pve pve.[subdomain].net
+EOF
 ```
 4. setup tailscale subnetting
 ```
@@ -42,7 +49,4 @@ subnet 10.200.0.0 netmask 255.255.255.0 {
 ```
 systemctl restart isc-dhcp-server
 ```
-cat <<EOF >/etc/hosts
-127.0.0.1 localhost
-127.0.1.1 pve pve.local.subdomain.net
-EOF
+
